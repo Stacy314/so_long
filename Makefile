@@ -1,11 +1,24 @@
-# # Contains the X11 and MLX header files
-# INCLUDES = -I/usr/include -Imlx
+NAME = so_long
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+MLX = -Lmlx -lmlx -framework OpenGL -framework AppKit
+LIBFT = ./libft/libft.a
 
-# .c.o:
-# 	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDES)
+SRC = src/main.c src/map.c src/events.c src/render.c
+OBJ = $(SRC:.c=.o)
 
-# # Link X11 and MLX
-# MLX_FLAGS = -Lmlx -lmlx -L/usr/lib/X11 -lXext -lX11
+all: $(NAME)
 
-# $(NAME): $(OBJS)
-# 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(MLX_FLAGS)
+$(NAME): $(OBJ)
+	$(MAKE) -C ./libft
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
+
+clean:
+	$(MAKE) clean -C ./libft
+	rm -f $(OBJ)
+
+fclean: clean
+	$(MAKE) fclean -C ./libft
+	rm -f $(NAME)
+
+re: fclean all

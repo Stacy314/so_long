@@ -3,8 +3,35 @@
 
 #include "minilibx-linux/mlx.h"
 #include "minilibx-linux/mlx_int.h"
-#include <stdlib.h>
+#include "../libft/libft.h"
 
+# include <mlx.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
+
+# define W_KEY 13
+# define A_KEY 0
+# define S_KEY 1
+# define D_KEY 2
+# define ESC_KEY 53
+
+typedef struct s_game {
+    void    *mlx;
+    void    *win;
+    char    **map;
+    int     map_width;
+    int     map_height;
+}               t_game;
+
+int     init_game(t_game *game, char *map_file);
+int     parse_map(t_game *game, char *filename);
+void    render_map(t_game *game);
+int     handle_keypress(int key, t_game *game);
+void    exit_game(t_game *game);
+
+#endif
 
 // typedef struct s_data
 // {
@@ -59,5 +86,3 @@
 // 	mlx_loop(data.mlx_ptr);
 // 	return (0);
 // }
-
-#endif

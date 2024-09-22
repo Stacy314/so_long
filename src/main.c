@@ -1,3 +1,25 @@
+#include "../include/so_long.h"
+
+int main(int argc, char **argv)
+{
+    t_game game;
+
+    if (argc != 2)
+    {
+        printf("Error\nUsage: ./so_long <map.ber>\n");
+        return (1);
+    }
+    if (!init_game(&game, argv[1]))
+    {
+        printf("Error\nFailed to initialize game.\n");
+        return (1);
+    }
+    mlx_loop(game.mlx);
+    return (0);
+}
+
+
+
 // if (all_collectables_collected && exit_count == 1)
 // 	return map_valid;
 // if (on_wall)
@@ -35,15 +57,15 @@
 
 
 
-#include "so_long.h"
+// #include "so_long.h"
 
-int	main(void)
-{
-	void	*mlx;
-	//void	*mlx_win;
+// int	main(void)
+// {
+// 	void	*mlx;
+// 	//void	*mlx_win;
 
-	mlx = mlx_init();
-	//mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	mlx_loop(mlx);
-}
+// 	mlx = mlx_init();
+// 	//mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+// 	mlx_loop(mlx);
+// }
 
