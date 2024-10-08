@@ -6,7 +6,7 @@
 /*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/08 17:57:46 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/10/08 19:50:27 by anastasiia       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void move_player(t_game *game, int dx, int dy)
     ft_printf("Steps: %d\n", game->steps);
 
     // Очищаємо вікно перед рендерингом (щоб не залишалися старі спрайти)
-    mlx_clear_window(game->mlx, game->win);
+    //mlx_clear_window(game->mlx, game->win);
 
     // Перемальовуємо всю карту
     render_map(game);
