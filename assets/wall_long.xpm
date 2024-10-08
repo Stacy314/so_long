@@ -1,0 +1,29 @@
+/* XPM */
+static char *a6f0d64b91954279ddcb53d5a89b36dfbr3VqtJiFoD1jBO7[] = {
+/* columns rows colors chars-per-pixel */
+"48 16 7 1 ",
+"  c #1F1F20",
+". c #46322B",
+"X c #734B45",
+"o c #706051",
+"O c #A27C57",
+"+ c #BA9982",
+"@ c #DBA29A",
+/* pixels */
+"O++++++o+++@+++oO++++++o+++@+++oO++++++o+++@+++o",
+"+++++++o+++++++o+++++++o+++++++o+++++++o+++++++o",
+"++++++OX+++++++o++++++OX+++++++o++++++OX+++++++o",
+"++@@+@@O+@@@@@@O++@@+@@O+@@@@@@O++@@+@@O+@@@@@@O",
+"OOOOOOO.OOOOOO+.OOOOOOO.OOOOOO+.OOOOOOO.OOOOOO+.",
+"OOOOOOo.OOOOOOO OOOOOOo.OOOOOOO OOOOOOo.OOOOOOO ",
+"oXXoooo ooooXoo oXXoooo ooooXoo oXXoooo ooooXoo ",
+" . .X.      ..   . .X.      ..   . .X.      ..  ",
+"OO+O.      .OOOOOO+O.      .OOOOOO+O.      .OOOO",
+"ooooX  ... .ooooooooX  ... .ooooooooX  ... .oooo",
+".ooX .... . oooX.ooX .... . oooX.ooX .... . oooX",
+" .     ...   .   .     ...   .   .     ...   .  ",
+"ooOOOOX ooOOooO ooOOOOX ooOOooO ooOOOOX ooOOooO ",
+"XoooooO ooooooo XoooooO ooooooo XoooooO ooooooo ",
+"ooooXoo .XooooX ooooXoo .XooooX ooooXoo .XooooX ",
+"                                                "
+};

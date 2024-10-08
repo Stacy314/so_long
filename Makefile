@@ -1,24 +1,58 @@
-NAME = so_long
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-MLX = -Lmlx -lmlx -framework OpenGL -framework AppKit
-LIBFT = ./libft/libft.a
+CC          = cc
+RM          = rm -rf
+CFLAGS      = -Wall -Wextra -Werror -MD -MP -g -I $(INCLUDES)
 
-SRC = src/main.c src/map.c src/events.c src/render.c
-OBJ = $(SRC:.c=.o)
+NAME        = so_long
+SRCSDIR     = src
+INCLUDES    = includes
+SRCS        = \
+            main.c \
+            events.c \
+            game.c \
+            map.c \
+            render.c \
+			flood_fill.c \
+
+OBJSDIR     = objs
+OBJS        = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.o))
+DEPS        = $(addprefix $(OBJSDIR)/, $(SRCS:.c=.d))
+
+
+LIBDIR      = ./libft
+LIBFT       = $(LIBDIR)/libft.a
+
+MLXDIR      = ./minilibx-linux
+MLX         = -L$(MLXDIR) -lmlx -lX11 -lXext -lm
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) -o $(NAME)
+bonus: $(NAME_B)
+
+$(NAME): $(OBJS) $(LIBFT) $(MLXDIR)/libmlx.a
+		$(CC) $(CFLAGS) -o $@ $^ -L$(LIBDIR) $(LIBFT) $(MLX)
+
+$(LIBFT):
+		$(MAKE) -C $(LIBDIR) all
+
+$(MLXDIR)/libmlx.a:
+		$(MAKE) -C $(MLXDIR)
+
+$(OBJSDIR)/%.o: $(SRCSDIR)/%.c
+		@mkdir -p $(dir $@)
+		$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(MAKE) clean -C ./libft
-	rm -f $(OBJ)
+		$(MAKE) -C $(LIBDIR) clean
+		$(MAKE) -C $(MLXDIR) clean
+		$(RM) $(OBJSDIR) $(OBJSDIR_B)
 
 fclean: clean
-	$(MAKE) fclean -C ./libft
-	rm -f $(NAME)
+		$(MAKE) -C $(LIBDIR) fclean
+		$(MAKE) -C $(MLXDIR) clean
+		$(RM) $(NAME) $(NAME_B)
 
 re: fclean all
+
+-include $(DEPS)
+
+.PHONY: all clean fclean re bonus
