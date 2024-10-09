@@ -6,7 +6,7 @@
 /*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/08 18:24:12 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/10/09 15:42:27 by anastasiia       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@
 # define KEY_ESC 65307 //53
 
 # define MANA "./assets/collectible.xpm"
-# define GOBLIN "./assets/player.xpm"
+//# define GOBLIN_S "./assets/player.xpm"
+# define GOBLIN_R "./assets/player_right.xpm"
+# define GOBLIN_L "./assets/player_left.xpm"
 # define WALL "./assets/wall.xpm"
 # define EXIT "./assets/exit.xpm"
 # define FLOOR "./assets/floor.xpm"
@@ -41,6 +43,8 @@ typedef struct s_game
 	void	*collectible_img;
 	void	*exit_img;
 	void	*player_img;
+	void	*player_img_right;
+	void	*player_img_left;
 	char	**map;
 	int		map_width;
 	int		map_height;

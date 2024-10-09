@@ -6,7 +6,7 @@
 /*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/08 18:19:57 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/10/09 15:57:10 by anastasiia       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 // Функція для відображення одного елемента на карті
 void	draw_tile(t_game *game, int x, int y)
 {
+	mlx_put_image_to_window(game->mlx, game->win, game->floor_img, x * TILE_SIZE, y * TILE_SIZE);
 	if (game->map[y][x] == '1')
 		mlx_put_image_to_window(game->mlx, game->win, game->wall_img, x * TILE_SIZE, y * TILE_SIZE);
 	else if (game->map[y][x] == 'C')
@@ -45,15 +46,22 @@ void load_images(t_game *game)
     int width;
     int height;
 
+	    // Завантажуємо зображення гравця для різних напрямків
+    game->player_img_right = mlx_xpm_file_to_image(game->mlx, GOBLIN_R, &width, &height);
+	if (!game->player_img_right)
+        exit_with_error("Failed to load player_right texture");
+    game->player_img_left = mlx_xpm_file_to_image(game->mlx, GOBLIN_L, &width, &height);
+	if (!game->player_img_left)
+        exit_with_error("Failed to load player_left texture");
+
+		game->player_img = game->player_img_right;
+	
     game->wall_img = mlx_xpm_file_to_image(game->mlx, WALL, &width, &height);
     if (!game->wall_img)
 		exit_with_error("Failed to load wall texture");
 	game->floor_img = mlx_xpm_file_to_image(game->mlx, FLOOR, &width, &height);
     if (!game->floor_img)
         exit_with_error("Failed to load floor texture");
-    game->player_img = mlx_xpm_file_to_image(game->mlx, GOBLIN, &width, &height);
-    if (!game->player_img)
-        exit_with_error("Failed to load player texture");
     game->collectible_img = mlx_xpm_file_to_image(game->mlx, MANA, &width, &height);
     if (!game->collectible_img)
         exit_with_error("Failed to load collectible texture");

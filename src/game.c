@@ -6,7 +6,7 @@
 /*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/08 20:05:09 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/10/09 15:57:01 by anastasiia       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,19 @@ void move_player(t_game *game, int dx, int dy)
     // Перевірка, чи це не стіна
     if (game->map[new_y][new_x] == '1')
         return;
+    
+    // Оновлюємо спрайт залежно від напряму
+    if (dx > 0)  // Рух вправо
+    {
+        game->player_img = game->player_img_right;
+    }
+    else if (dx < 0)  // Рух вліво
+    {
+        game->player_img = game->player_img_left;
+    }
 
+
+        
 	// Якщо гравець рухається на клітинку з колекційним предметом
     if (game->map[new_y][new_x] == 'C')
     {
@@ -47,21 +59,19 @@ void move_player(t_game *game, int dx, int dy)
             close_window(game);
         }
     }
-	// Оновлення позиції гравця
+    // Очищаємо стару позицію гравця (замальовуємо підлогою)
+    mlx_put_image_to_window(game->mlx, game->win, game->floor_img, game->player_x * TILE_SIZE, game->player_y * TILE_SIZE);
+	
+    // Оновлення позиції гравця
     game->map[game->player_y][game->player_x] = '0';  // Очищаємо стару позицію гравця
     game->map[new_y][new_x] = 'P';  // Переміщуємо гравця на нову позицію
     game->player_x = new_x;
     game->player_y = new_y;
 
-    // Збільшуємо лічильник кроків
+    // Рендеримо гравця на новій позиції
+    mlx_put_image_to_window(game->mlx, game->win, game->floor_img, game->player_x * TILE_SIZE, game->player_y * TILE_SIZE);
+    mlx_put_image_to_window(game->mlx, game->win, game->player_img, new_x * TILE_SIZE, new_y * TILE_SIZE);
+
     game->steps++;
-
-    // Виводимо кількість кроків
     ft_printf("Steps: %d\n", game->steps);
-
-    // Очищаємо вікно перед рендерингом (щоб не залишалися старі спрайти)
-    mlx_clear_window(game->mlx, game->win);
-
-    // Перемальовуємо всю карту
-    render_map(game);
 }
