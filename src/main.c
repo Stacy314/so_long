@@ -6,7 +6,7 @@
 /*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/08 18:09:48 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/10/13 22:28:41 by anastasiia       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@ int	close_window(void *param)
 	t_game	*game;
 
 	game = (t_game *)param;
-    //mlx_destroy_window(game->mlx, game->win);
-	free_map(game);
+    free_map(game->map, game->map_height);
+    mlx_destroy_window(game->mlx, game->win);
 	exit(0);
+}
+void	exit_with_error(char *error_message)
+{
+	ft_printf("Error\n%s\n", error_message);
+	exit(1);
 }
 
 int	valid_name_map(char *filename)
@@ -30,7 +35,7 @@ int	valid_name_map(char *filename)
 	if (len < 4)    //5         // Розширення ".ber" має мінімум 4 символи
 		return (0);
     // Перевіряємо, чи закінчується файл на ".ber"
-	if (ft_strncmp(&filename[len - 4], ".ber", 4) == 0) // 5 5
+	if (ft_strncmp(&filename[len - 4], ".ber", 4) == 0) // 5
 		return (1);
 	return (0);
 }
@@ -52,6 +57,19 @@ int main(int ac, char **av)
     if (game.mlx == NULL)
         exit_with_error("Failed to initialize MLX");
 
+    // int fd = open("tets", O_RDONLY);
+	// char *line = get_next_line(fd);
+	// while (line)
+	// {
+	// 	printf("%s", line);
+	// 	if (!line)
+	// 		return 0;
+	// 	free(line);
+	// 	line = get_next_line(fd);
+	// }
+	// close(fd);
+	// return 0;
+    
     // Отримуємо розміри карти
     get_map_size(&game, av[1]);
 

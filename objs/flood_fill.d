@@ -62,8 +62,7 @@ objs/flood_fill.o: src/flood_fill.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
- /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stdbool.h
+ /usr/include/x86_64-linux-gnu/bits/struct_stat.h
 /usr/include/stdc-predef.h:
 src/../includes/so_long.h:
 src/../includes/../minilibx-linux/mlx.h:
@@ -138,4 +137,3 @@ src/../includes/../libft/libft.h:
 /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h:
 /usr/include/x86_64-linux-gnu/bits/stat.h:
 /usr/include/x86_64-linux-gnu/bits/struct_stat.h:
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stdbool.h:
