@@ -3,79 +3,135 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
+/*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/10 14:59:50 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/11/02 21:11:32 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-int can_move(t_game *game, int new_x, int new_y)
+int	handle_keypress(int keycode, t_game *game)
 {
-    // Перевірка меж карти
-    if (new_x < 0 || new_x >= game->map_width || new_y < 0 
-		|| new_y >= game->map_height)
-        return (0);
-    // Перевірка, чи це не стіна
-    if (game->map[new_y][new_x] == '1')
-        return (0);
-    // Якщо гравець рухається на вихід, перевіряємо чи всі предмети зібрані
-    if (game->map[new_y][new_x] == 'E' && game->collectibles > 0)
-    {
-        ft_printf("Cannot exit yet! Collect all items first.\n");
-        return (0);
-    }
-    return (1);  // Рух дозволений
+	if (keycode == KEY_ESC)
+		close_window(game);
+	if (keycode == KEY_W)
+		move_player(game, 0, -1);
+	if (keycode == KEY_A)
+		move_player(game, -1, 0);
+	if (keycode == KEY_S)
+		move_player(game, 0, 1);
+	if (keycode == KEY_D)
+		move_player(game, 1, 0);
+	return (0);
 }
 
-void update_player_position(t_game *game, int new_x, int new_y)
+void	free_map(char **map, int height)
 {
-    // Оновлюємо спрайт залежно від напряму
-    if (new_x > game->player_x)  // Рух вправо
-        game->player_img = game->player_img_right;
-    else if (new_x < game->player_x)  // Рух вліво
-        game->player_img = game->player_img_left;
-    // Якщо гравець рухається на клітинку з предметом
-    if (game->map[new_y][new_x] == 'C')
-    {
-        game->collectibles--;  // Зменшуємо кількість предметів
-        game->map[new_y][new_x] = '0';  // Замість предмета ставимо підлогу
-    }
-    // Якщо гравець на виході і всі предмети зібрані
-    if (game->map[new_y][new_x] == 'E' && game->collectibles == 0)
-    {
-        ft_printf("You win! All items collected!\n");
-        close_window(game);  // Завершуємо гру
-    }
-    // Оновлюємо карту та позицію гравця
-    game->map[game->player_y][game->player_x] = '0';  // Очищаємо стару позицію
-    game->map[new_y][new_x] = 'P';  // Переміщуємо гравця на нову позицію
-    // Очищаємо стару позицію і рендеримо гравця на новій позиції
-    mlx_put_image_to_window(game->mlx, game->win, game->floor_img,
-		game->player_x * TILE_SIZE, game->player_y * TILE_SIZE);
-    mlx_put_image_to_window(game->mlx, game->win, game->player_img,
-		new_x * TILE_SIZE, new_y * TILE_SIZE);
-    // Оновлюємо координати гравця
-    game->player_x = new_x;
-    game->player_y = new_y;
-    // Збільшуємо лічильник кроків
-    game->steps++;
-    ft_printf("Steps: %d\n", game->steps);
+	int	i;
+
+	i = 0;
+	while (i < height)
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }
 
-void move_player(t_game *game, int dx, int dy)
+void	create_window(t_game *game)
 {
-    int new_x;
-    int new_y;
+	int	window_width;
+	int	window_height;
+
+	window_width = game->map_width * TILE;
+	window_height = game->map_height * TILE;
+	game->win = mlx_new_window(game->mlx, window_width,
+			window_height, "So Long");
+	if (!game->win)
+		exit_with_error(game, "Failed to create window");
+}
+
+int	validate_row_length(const char *line, int expected_width)
+{
+	int	line_length;
+
+	line_length = ft_strlen(line);
+	if (line_length != expected_width)
+		return (0);
+	return (1);
+}
+
+int	load_map(t_game *game, char *filename)
+{
+	int		fd;
+	char	*line;
+	int		y;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	y = 0;
+	line = get_next_line(fd);
+	while (line && line != NULL)
+	{
+		if (!validate_row_length(line, game->map_width))
+		{
+			while (line)
+			{
+				free(line);
+				line = get_next_line(fd);
+			}
+			free(line);
+			close(fd);
+			exit_with_error(game, "Error: Invalid map shape");
+		}
+		ft_strlcpy(game->map[y], line, game->map_width + 1);
+		free(line);
+		y++;
+		line = get_next_line(fd);
+	}
+	if (!validate_map(game))
+		exit_with_error(game, "Invalid map");
+	return (close(fd), 1);
+}
+
+//int	load_map(t_game *game, char *filename)
+//{
+//	int		fd;
+//	char	*line;
+//	int		y;
+//	int		line_length;
+
+//	fd = open(filename, O_RDONLY);
+//	if (fd < 0)
+//		return (0);
+//	y = 0;
+//	line = get_next_line(fd);
+//	while (line)
+//	{
+//		line_length = ft_strlen(line);
+//		if (line[line_length - 1] == '\n')
+//			line[line_length - 1] = '\0';
+//		ft_strlcpy(game->map[y], line, game->map_width + 1);
+//		free(line);
+//		y++;
+//		line = get_next_line(fd);
+//	}
+//	close(fd);
+//	if (!validate_map(game))
+//		exit_with_error(game, "Invalid map");
+//	return (1);
+//}
+
+void	move_player(t_game *game, int dx, int dy)
+{
+	int	new_x;
+	int	new_y;
 
 	new_x = game->player_x + dx;
 	new_y = game->player_y + dy;
-    // Перевіряємо, чи може гравець рухатися
-    if (can_move(game, new_x, new_y))
-    {
-        // Оновлюємо позицію гравця, якщо рух дозволений
-        update_player_position(game, new_x, new_y);
-    }
+	if (can_move(game, new_x, new_y))
+		update_player_position(game, new_x, new_y);
 }

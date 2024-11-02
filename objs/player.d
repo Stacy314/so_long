@@ -1,4 +1,4 @@
-objs/main.o: src/main.c src/../includes/so_long.h \
+objs/player.o: src/player.c src/../includes/so_long.h \
   includes/../minilibx-linux/mlx.h includes/../libft/libft.h \
   /usr/include/unistd.h /usr/include/features.h \
   /usr/include/features-time64.h \

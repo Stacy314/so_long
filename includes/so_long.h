@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
+/*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/10 16:19:41 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/11/02 18:12:05 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 
 # include <fcntl.h>
 
-# define TILE_SIZE 32
-# define KEY_W 119 //13
-# define KEY_A 97 //0
-# define KEY_S 115 //1
-# define KEY_D 100 //2
-# define KEY_ESC 65307 //53
+# define TILE 32
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_ESC 65307
+
+# define SUCCESS 0
+# define FAILURE 1
 
 # define MANA "./assets/collectible.xpm"
 # define GOBLIN_R "./assets/player_right.xpm"
@@ -50,32 +53,44 @@ typedef struct s_game
 	int		player_y;
 	int		collectibles;
 	int		steps;
-	void	*wdw;
+	int		flag_exit;
 }				t_game;
+
+typedef struct s_map
+{
+	char	**map;
+	int		width;
+	int		height;
+}	t_map;
 
 // game.c
 void	move_player(t_game *game, int new_x, int new_y);
-
-// map.c
-void	load_map(t_game *game, char *filename);
-void	get_map_size(t_game *game, char *filename);
-int		validate_map(t_game *game);
-
-// events.c
 int		handle_keypress(int keycode, t_game *game);
 void	create_window(t_game *game);
+int		load_map(t_game *game, char *filename);
 void	free_map(char **map, int height);
-void	allocate_map_memory(t_game *game, int width, int height);
+
+// map.c
+int		get_map_size(t_game *game, char *filename);
+int		validate_map(t_game *game);
+int		allocate_map_memory(t_game *game, int width, int height);
 
 // render.c
 void	load_images(t_game *game);
 void	render_map(t_game *game);
+void	free_images(t_game *game);
+void	cleanup_and_exit(t_game *game, const char *error_message);
 
 // main.c
 int		close_window(void *param);
-void	exit_with_error(char *error_message);
+void	exit_with_error(t_game *game, const char *message);
 
 // flood_fill.c
 int		check_reachability(t_game *game);
+void	flood_fill(t_map *map_data, int x, int y);
+
+// player.c
+int		can_move(t_game *game, int new_x, int new_y);
+void	update_player_position(t_game *game, int new_x, int new_y);
 
 #endif

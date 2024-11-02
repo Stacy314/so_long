@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anastasiia <anastasiia@student.42.fr>      +#+  +:+       +#+        */
+/*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/10/13 22:28:41 by anastasiia       ###   ########.fr       */
+/*   Updated: 2024/11/02 19:01:30 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,84 +17,80 @@ int	close_window(void *param)
 	t_game	*game;
 
 	game = (t_game *)param;
-    free_map(game->map, game->map_height);
-    mlx_destroy_window(game->mlx, game->win);
-	exit(0);
-}
-void	exit_with_error(char *error_message)
-{
-	ft_printf("Error\n%s\n", error_message);
-	exit(1);
+	free_images(game);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->map)
+		free_map(game->map, game->map_height);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	exit(SUCCESS);
 }
 
-int	valid_name_map(char *filename)
+void	exit_with_error(t_game *game, const char *message)
 {
-	int	len;
+	if (message)
+		ft_printf("Error: %s\n", message);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	if (game->map)
+		free_map(game->map, game->map_height);
+	exit(FAILURE);
+}
+
+int	valid_name_map(const char *filename)
+{
+	int		len;
+	char	*basename;
+	int		lenber;
 
 	len = ft_strlen(filename);
-	if (len < 4)    //5         // Розширення ".ber" має мінімум 4 символи
-		return (0);
-    // Перевіряємо, чи закінчується файл на ".ber"
-	if (ft_strncmp(&filename[len - 4], ".ber", 4) == 0) // 5
+	basename = ft_strrchr(filename, '/');
+	if (basename)
+	{
+		basename++;
+		lenber = ft_strlen(basename);
+		if (lenber > 4 && ft_strncmp(basename + lenber - 4, ".ber", 4) == 0)
+			return (1);
+	}
+	else if (len > 4 && ft_strncmp(filename + len - 4, ".ber", 4) == 0)
 		return (1);
 	return (0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    t_game game;
+	t_game	game;
 
-    game.steps = 0;
-    //ft_bzero(&game, sizeof(game));
-    if (ac != 2)
-        exit_with_error("Usage: ./so_long <map_file.ber>\n");
-
-    if (!valid_name_map(av[1]))
-			exit_with_error("Invalid map file. Must be a .ber file");
-
-    // Ініціалізація MiniLibX
-    game.mlx = mlx_init();
-    if (game.mlx == NULL)
-        exit_with_error("Failed to initialize MLX");
-
-    // int fd = open("tets", O_RDONLY);
-	// char *line = get_next_line(fd);
-	// while (line)
-	// {
-	// 	printf("%s", line);
-	// 	if (!line)
-	// 		return 0;
-	// 	free(line);
-	// 	line = get_next_line(fd);
-	// }
-	// close(fd);
-	// return 0;
-    
-    // Отримуємо розміри карти
-    get_map_size(&game, av[1]);
-
-    // Виділяємо пам'ять для карти
-    allocate_map_memory(&game, game.map_width, game.map_height);
-
-
-    // Завантаження та парсинг карти
-    load_map(&game, av[1]);
-
-    // Створюємо вікно потрібного розміру
-    create_window(&game);
-    
-    load_images(&game);
-
-    // Рендеринг початкового стану карти
-    render_map(&game);
-
-    // Обробка події закриття вікна
-    mlx_key_hook(game.win, handle_keypress, &game);
-    mlx_hook(game.win, 17, 0, close_window, &game); // 17 — подія для закриття вікна
-
-    // Запускаємо цикл подій MiniLibX
-    mlx_loop(game.mlx);
-
-    return (0);
+	ft_bzero(&game, sizeof(game));
+	if (ac != 2)
+		return (ft_printf("Usage: ./so_long <map_file.ber>\n"), 1);
+	if (!valid_name_map(av[1]))
+		return (ft_printf("Invalid map file\n"), 1);
+	if (!get_map_size(&game, av[1]) || !game.map_width
+		|| !game.map_height || game.map_width < 3 || game.map_height < 3
+		|| game.map_width > 100 || game.map_height > 100)
+		return (ft_printf("Invalid map size\n"), 1);
+	game.mlx = mlx_init();
+	if (!game.mlx)
+		return (ft_printf("Failed to initialize MLX\n"), 1);
+	if (!allocate_map_memory(&game, game.map_width, game.map_height))
+		return (ft_printf("Failed to allocate memory for map\n"), 1);
+	if (!load_map(&game, av[1]))
+		cleanup_and_exit (&game, "Failed to load map");
+	create_window(&game);
+	load_images(&game);
+	render_map(&game);
+	mlx_key_hook(game.win, handle_keypress, &game);
+	mlx_hook(game.win, 17, 0, close_window, &game);
+	mlx_loop(game.mlx);
+	return (0);
 }
-
