@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   valid_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/02 19:56:37 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/04 11:38:27 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,20 +107,22 @@ int	validate_map(t_game *game)
 	return (1);
 }
 
-int	allocate_map_memory(t_game *game, int width, int height)
+int	valid_name_map(const char *filename)
 {
-	int	i;
+	int		len;
+	char	*basename;
+	int		lenber;
 
-	game->map = malloc(sizeof(char *) * (height + 1));
-	if (!game->map)
-		return (0);
-	i = 0;
-	while (i < height)
+	len = ft_strlen(filename);
+	basename = ft_strrchr(filename, '/');
+	if (basename)
 	{
-		game->map[i] = malloc(sizeof(char) * (width + 1));
-		if (!game->map[i])
-			return (0);
-		i++;
+		basename++;
+		lenber = ft_strlen(basename);
+		if (lenber > 4 && ft_strncmp(basename + lenber - 4, ".ber", 4) == 0)
+			return (1);
 	}
-	return (1);
+	else if (len > 4 && ft_strncmp(filename + len - 4, ".ber", 4) == 0)
+		return (1);
+	return (0);
 }

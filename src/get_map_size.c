@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map2.c                                             :+:      :+:    :+:   */
+/*   get_map_size.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/02 17:36:28 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:03:08 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	read_map_file(t_game *game, int fd)
 		else
 			line_length++;
 		bytes_read = read(fd, buffer, 1);
+		if (bytes_read == -1)
+			return (0);
 	}
 	if (line_length > 0)
 		update_map_dimensions(game, &line_length);
@@ -50,10 +52,7 @@ int	get_map_size(t_game *game, char *filename)
 	game->map_height = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
 		cleanup_and_exit(game, "Can't open map file");
-		return (0);
-	}
 	if (!read_map_file(game, fd))
 	{
 		close(fd);

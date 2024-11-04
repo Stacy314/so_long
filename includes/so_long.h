@@ -6,14 +6,14 @@
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/02 18:12:05 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:38:42 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include "../minilibx-linux/mlx.h"
+# include <mlx.h>
 # include "../libft/libft.h"
 
 # include <fcntl.h>
@@ -68,12 +68,14 @@ void	move_player(t_game *game, int new_x, int new_y);
 int		handle_keypress(int keycode, t_game *game);
 void	create_window(t_game *game);
 int		load_map(t_game *game, char *filename);
-void	free_map(char **map, int height);
 
 // map.c
 int		get_map_size(t_game *game, char *filename);
 int		validate_map(t_game *game);
 int		allocate_map_memory(t_game *game, int width, int height);
+int		process_map_line(t_game *game, char *line, int y);
+int		valid_name_map(const char *filename);
+int		validate_row_length(const char *line, int expected_width);	
 
 // render.c
 void	load_images(t_game *game);
@@ -81,9 +83,11 @@ void	render_map(t_game *game);
 void	free_images(t_game *game);
 void	cleanup_and_exit(t_game *game, const char *error_message);
 
-// main.c
+// free.c
 int		close_window(void *param);
 void	exit_with_error(t_game *game, const char *message);
+void	free_remaining_lines(int fd, char *line);
+void	free_map(char **map, int height);
 
 // flood_fill.c
 int		check_reachability(t_game *game);

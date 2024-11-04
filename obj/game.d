@@ -1,7 +1,6 @@
-objs/render.o: src/render.c src/../includes/so_long.h \
-  includes/../minilibx-linux/mlx.h includes/../libft/libft.h \
-  /usr/include/unistd.h /usr/include/features.h \
-  /usr/include/features-time64.h \
+obj/game.o: src/game.c src/../includes/so_long.h /usr/include/mlx.h \
+  includes/../libft/libft.h /usr/include/unistd.h \
+  /usr/include/features.h /usr/include/features-time64.h \
   /usr/include/x86_64-linux-gnu/bits/wordsize.h \
   /usr/include/x86_64-linux-gnu/bits/timesize.h \
   /usr/include/stdc-predef.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -66,7 +65,7 @@ objs/render.o: src/render.c src/../includes/so_long.h \
 
 src/../includes/so_long.h:
 
-includes/../minilibx-linux/mlx.h:
+/usr/include/mlx.h:
 
 includes/../libft/libft.h:
 

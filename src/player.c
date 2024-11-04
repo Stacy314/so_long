@@ -6,7 +6,7 @@
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/02 12:29:06 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:55:50 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	handle_collectibles_and_exit(t_game *game, int new_x, int new_y)
 	}
 	if (game->map[new_y][new_x] == 'E' && game->collectibles == 0)
 	{
-		ft_printf("You win! All items collected!\n");
+		game->steps++;
+		ft_printf("Steps: %d\nYou win! :3\n", game->steps);
 		close_window(game);
 	}
 }
