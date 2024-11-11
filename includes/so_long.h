@@ -6,7 +6,7 @@
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/04 16:38:42 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:52:59 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # define KEY_D 100
 # define KEY_ESC 65307
 
-# define SUCCESS 0
-# define FAILURE 1
+# define SUCCESS 1
+# define FAILURE 0
 
 # define MANA "./assets/collectible.xpm"
 # define GOBLIN_R "./assets/player_right.xpm"

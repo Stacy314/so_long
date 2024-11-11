@@ -6,7 +6,7 @@
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/04 16:57:42 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:44:08 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,12 @@ int	allocate_map_memory(t_game *game, int width, int height)
 	i = 0;
 	while (i < height)
 	{
-		game->map[i] = malloc(sizeof(char) * (width + 1));
+		game->map[i] = ft_calloc(sizeof(char) * (width + 1), 1);
 		if (!game->map[i])
+		{
+			free_map(game->map, i);
 			return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -59,7 +62,7 @@ int	load_map(t_game *game, char *filename)
 		return (0);
 	y = 0;
 	line = get_next_line(fd);
-	while (line && line != NULL)
+	while (line)
 	{
 		if (!process_map_line(game, line, y))
 		{

@@ -6,7 +6,7 @@
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/02 22:01:13 by apechkov         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:57:34 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	**copy_map(char **map, int width, int height)
 	char	**copy;
 
 	(void)width;
-	copy = malloc(sizeof(char *) * height);
+	copy = ft_calloc(sizeof(char *) * height, 1);
 	if (!copy)
 		return (NULL);
 	i = 0;
@@ -53,6 +53,9 @@ char	**perform_flood_fill(t_game *game)
 {
 	t_map	map_data;
 
+	map_data.map = NULL;
+	map_data.width = 0;
+	map_data.height = 0;
 	map_data.map = copy_map(game->map, game->map_width, game->map_height);
 	if (!map_data.map)
 		return (NULL);
