@@ -15,7 +15,6 @@
 - [Usage](#-usage)
 - [Map Format](#-map-format)
 - [Controls](#-controls)
-- [Error Handling](#-error-handling)
 
 ---
 
