@@ -33,7 +33,7 @@
 
 ## ⚙️ Requirements
 
-- GCC compiler
+- CC compiler
 - `make`
 - `MiniLibX` installed
 - macOS or Linux (Linux may require additional setup for MiniLibX)
