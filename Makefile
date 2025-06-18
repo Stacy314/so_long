@@ -51,9 +51,7 @@ $(LIBFT):
 	$(SILENT)$(MAKE) -C $(LIBDIR) all
 
 $(MLXDIR)/libmlx.a:
-	@echo "✅ MLX already built. Skipping rebuild."
-
-# $(MAKE) -C $(MLXDIR)
+	$(SILENT)$(MAKE) -C $(MLXDIR)
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 	$(SILENT)@mkdir -p $(OBJSDIR)
@@ -62,11 +60,13 @@ $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 -include $(DEPS)
 
 clean:
-		$(SILENT)$(MAKE) -C $(LIBDIR) clean
+		$(SILENT)$(MAKE) -s -C $(LIBDIR) clean
+		$(SILENT)$(MAKE) -s -C $(MLXDIR) clean
 		$(SILENT)$(RM) $(OBJSDIR)
 
 fclean: clean
-		$(SILENT)$(MAKE) -C $(LIBDIR) fclean
+		$(SILENT)$(MAKE) -s -C $(LIBDIR) clean
+		$(SILENT)$(MAKE) -s -C $(MLXDIR) clean
 		$(SILENT)$(RM) $(NAME)
 
 re: fclean all
