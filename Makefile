@@ -24,7 +24,8 @@ LIBDIR      = ./libft
 LIBFT       = $(LIBDIR)/libft.a
 
 MLXDIR      = ./minilibx-linux
-MLX         = -L$(MLXDIR)  -lXext -lX11 -lm
+MLX         = -L$(MLXDIR) -lmlx -lXext -lX11 -lm
+
 #MLX         = -lmlx -lX11 -lXext -lm 
 
 SILENT = @
@@ -50,7 +51,9 @@ $(LIBFT):
 	$(SILENT)$(MAKE) -C $(LIBDIR) all
 
 $(MLXDIR)/libmlx.a:
-	$(SILENT)$(MAKE) -C $(MLXDIR)
+	@echo "✅ MLX already built. Skipping rebuild."
+
+# $(MAKE) -C $(MLXDIR)
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 	$(SILENT)@mkdir -p $(OBJSDIR)

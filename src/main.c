@@ -53,7 +53,7 @@ int	main(int ac, char **av)
 		cleanup_and_exit (&game, "Failed to load map");
 	game.mlx = mlx_init();
 	if (!game.mlx)
-		cleanup_and_exit (&game, "Failed to load map");
+		cleanup_and_exit (&game, "Failed mlx_init");
 	create_window(&game);
 	load_images(&game);
 	render_map(&game);
