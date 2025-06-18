@@ -1,6 +1,11 @@
+################################################################################
+#                                                                              #
+#	                                Vars                                       #
+#                                                                              #
+################################################################################
 CC          = cc
 RM          = rm -rf
-CFLAGS      = -Wall -Wextra -Werror -MD -MP -g -I $(INCLUDES)
+CFLAGS      = -Wall -Wextra -Werror -MD -MP -g -I $(INCLUDES) -I $(MLXDIR)
 
 NAME        = so_long
 SRCSDIR     = src
@@ -18,30 +23,48 @@ DEPS        = $(OBJS:.o=.d)
 LIBDIR      = ./libft
 LIBFT       = $(LIBDIR)/libft.a
 
-MLX         = -lmlx -lX11 -lXext -lm
+MLXDIR      = ./minilibx-linux
+MLX         = -L$(MLXDIR)  -lXext -lX11 -lm
+#MLX         = -lmlx -lX11 -lXext -lm 
+
+SILENT = @
+
+################################################################################
+#                                                                              #
+#	                                Rules                                      #
+#                                                                              #
+################################################################################
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-		$(CC) $(CFLAGS) -o $@ $^ -L$(LIBDIR) $(LIBFT) $(MLX)
+$(NAME): $(OBJS) $(LIBFT) $(MLXDIR)/libmlx.a
+	$(SILENT)$(CC) $(CFLAGS) -o $@ $^ -L$(LIBDIR) $(LIBFT) $(MLX)
+	@echo "░██████╗░█████╗░░░░░░░██╗░░░░░░█████╗░███╗░░██╗░██████╗░"
+	@echo "██╔════╝██╔══██╗░░░░░░██║░░░░░██╔══██╗████╗░██║██╔════╝░"
+	@echo "╚█████╗░██║░░██║█████╗██║░░░░░██║░░██║██╔██╗██║██║░░██╗░"
+	@echo "░╚═══██╗██║░░██║╚════╝██║░░░░░██║░░██║██║╚████║██║░░╚██╗"
+	@echo "██████╔╝╚█████╔╝░░░░░░███████╗╚█████╔╝██║░╚███║╚██████╔╝"
+	@echo "╚═════╝░░╚════╝░░░░░░░╚══════╝░╚════╝░╚═╝░░╚══╝░╚═════╝░"
 		
 $(LIBFT):
-		$(MAKE) -C $(LIBDIR) all
+	$(SILENT)$(MAKE) -C $(LIBDIR) all
 
+$(MLXDIR)/libmlx.a:
+	$(SILENT)$(MAKE) -C $(MLXDIR)
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
-	@mkdir -p $(OBJSDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(SILENT)@mkdir -p $(OBJSDIR)
+	$(SILENT)$(CC) $(CFLAGS) -c $< -o $@
 
 -include $(DEPS)
 
 clean:
-		$(MAKE) -C $(LIBDIR) clean
-		$(RM) $(OBJSDIR)
+		$(SILENT)$(MAKE) -C $(LIBDIR) clean
+		$(SILENT)$(RM) $(OBJSDIR)
 
 fclean: clean
-		$(MAKE) -C $(LIBDIR) fclean
-		$(RM) $(NAME)
+		$(SILENT)$(MAKE) -C $(LIBDIR) fclean
+		$(SILENT)$(RM) $(NAME)
 
 re: fclean all
 
