@@ -34,16 +34,17 @@
 ## ⚙️ Requirements
 
 - CC compiler
-- `make`
-- `MiniLibX` installed
 - macOS or Linux (Linux may require additional setup for MiniLibX)
-- Your own implementation of `libft` (if used)
 
 ---
 
 ## 🔧 Installation
 
 Clone the repository and run:
+
+```bash
+git clone --recurse-submodules https://github.com/Stacy314/so_long
+```
 
 ```bash
 make
