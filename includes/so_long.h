@@ -6,7 +6,7 @@
 /*   By: apechkov <apechkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 15:44:06 by apechkov          #+#    #+#             */
-/*   Updated: 2024/11/08 16:52:59 by apechkov         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:40:01 by apechkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include "../ft_printf/ft_printf.h"
-# include "../get_next_line/get_next_line.h"
+# include "../src/get_next_line/get_next_line.h"
 
 # include <fcntl.h>
 

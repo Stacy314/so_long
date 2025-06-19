@@ -13,13 +13,13 @@ INCLUDES    = includes
 SRCS        = $(SRCSDIR)/main.c $(SRCSDIR)/player.c $(SRCSDIR)/game.c $(SRCSDIR)/valid_map.c \
               $(SRCSDIR)/load_map.c $(SRCSDIR)/render.c $(SRCSDIR)/flood_fill.c $(SRCSDIR)/free.c \
 			  $(SRCSDIR)/get_map_size.c \
-			  get_next_line/get_next_line_utils.c get_next_line/get_next_line.c
+			  $(SRCSDIR)/get_next_line/get_next_line_utils.c $(SRCSDIR)/get_next_line/get_next_line.c
 
 OBJSDIR     = obj
 OBJS        = $(OBJSDIR)/main.o $(OBJSDIR)/player.o $(OBJSDIR)/game.o $(OBJSDIR)/valid_map.o \
               $(OBJSDIR)/load_map.o $(OBJSDIR)/render.o $(OBJSDIR)/flood_fill.o $(OBJSDIR)/free.o \
 			  $(OBJSDIR)/get_map_size.o \
-			  get_next_line/get_next_line_utils.o get_next_line/get_next_line.o
+			  $(OBJSDIR)/get_next_line/get_next_line_utils.o $(OBJSDIR)/get_next_line/get_next_line.o
 
 DEPS        = $(OBJS:.o=.d)
 
@@ -54,16 +54,20 @@ $(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(MLXDIR)/libmlx.a
 	@echo "╚═════╝░░╚════╝░░░░░░░╚══════╝░╚════╝░╚═╝░░╚══╝░╚═════╝░"
 		
 $(LIBFT):
-	$(SILENT)$(MAKE) -C $(LIBDIR)
+	$(SILENT)$(MAKE) -s -C $(LIBDIR)
 
 $(PRINTF):
-	$(SILENT)$(MAKE) -C $(PRINTFDIR)
+	$(SILENT)$(MAKE) -s -C $(PRINTFDIR)
 
 $(MLXDIR)/libmlx.a:
-	$(SILENT)$(MAKE) -C $(MLXDIR)
+	$(SILENT)$(MAKE) -s -C $(MLXDIR)
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c
 	$(SILENT)@mkdir -p $(OBJSDIR)
+	$(SILENT)$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJSDIR)/get_next_line/%.o: $(SRCSDIR)/get_next_line/%.c
+	$(SILENT)@mkdir -p $(OBJSDIR)/get_next_line
 	$(SILENT)$(CC) $(CFLAGS) -c $< -o $@
 
 -include $(DEPS)
